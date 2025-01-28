@@ -16,57 +16,8 @@ import wikipedia
 import warnings
 import re
 warnings.filterwarnings("ignore", category=UserWarning, module="wikipedia")
+import VickyCrush_storage
 
-
-
-def get_x_amount_wiki_people():
-
-    # Define the URL
-    # url = "https://de.wikipedia.org/w/index.php?limit=500&offset=0&profile=default&search=famous+people&title=Spezial:Suche&ns0=1"
-    url = "https://de.wikipedia.org/w/index.php?limit=500&offset=500&profile=default&search=famous+people&title=Spezial:Suche&ns0=1"
-    # Send a GET request to the URL
-    response = requests.get(url)
-
-    potential_wiki_cadidate = []
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Parse the page content using BeautifulSoup
-        soup = BeautifulSoup(response.text, 'html.parser')
-
-        # Look for all search result links
-        links = soup.find_all('a', href=True)
-
-        # Loop through each link and check if it contains a valid Wikipedia article
-        for link in links:
-            href = link['href']
-
-            # Filter out non-article links
-            if href.startswith('/wiki/') and not href.startswith('/wiki/Spezial:'):
-                # Build the full URL
-                full_link = "https://de.wikipedia.org" + href
-                title = link.get_text(strip=True)  # Get the link text (title)
-
-                # Print the title and link
-                # print(f"Title: {title}, Link: {full_link}")
-
-                print(f"{title}_______{href[6:]}")
-                name_surname = title.split(" ")
-                href_name_surname = href[6:].split("_")
-                try:
-                    if len(name_surname) < 4 and name_surname[0] == href_name_surname[0] and name_surname[1] == \
-                            href_name_surname[1]:
-                        potential_wiki_cadidate.append(title)
-                except IndexError:
-                    pass
-
-
-
-    else:
-        print(f"Failed to retrieve the page. Status code: {response.status_code}")
-
-    # print(potential_wiki_cadidate)
-
-    return potential_wiki_cadidate
 
 def get_all_answers_keywords(candidate_list_full):
     """
@@ -110,7 +61,6 @@ def get_all_answers_keywords(candidate_list_full):
                 professions.append(word)
 
         print(f"\nQUESTION 3:\n(2 correct KEYWORDS: 100 points / 1 correct KEYWORD:  50 points)\nWhat was {person} known for ?\nAnswer (keywords): {professions}")
-
 
 def get_birth_info_and_sentence(url_list):
     candidate_list_full = []
@@ -186,8 +136,12 @@ def get_birth_info_and_sentence(url_list):
 
 def get_xxxx_amount_wiki_people():
 
+
+    # ------- DO NOT TOUCH ----------------------------------------
     # Define the URL
-    url = "https://de.wikipedia.org/w/index.php?limit=50&offset=0&profile=default&search=famous+people&title=Spezial:Suche&ns0=1"
+    # 1 famous people url
+    url = "https://de.wikipedia.org/w/index.php?limit=500&offset=500&profile=default&search=famous+people&title=Spezial:Suche&ns0=1"
+    # ------- DO NOT TOUCH ----------------------------------------
 
     url_list = []
     # Send a GET request to the URL
@@ -226,18 +180,17 @@ def get_xxxx_amount_wiki_people():
                 except IndexError:
                     pass
 
-
-
     else:
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
 
     # print(potential_wiki_cadidate)
 
+
     return url_list
 
+
+
 def main():
-
-
     print("VickyCrush_folder_stuff rules:")
     print("\nThe game will randomly pick people from wikipedia.\nIt will test your knowledge about them")
     print("\n1-10 players\n1-10 wiki people - knowledge questions\nHINT: This is a fast game. skip or try !\nThe amount of points in the End will show a winner!")
@@ -245,20 +198,27 @@ def main():
     print("\n!!! wait a second - data is loading !!!")
     print("\nwiki is very slow.\nwe get and validate up to 1000 entries -\ntakes a minute or 2 -\n")
 
-    url_list = get_xxxx_amount_wiki_people()
-    candidate_list_full = get_birth_info_and_sentence(url_list)
+    # !!!! OPTION LOAD FRESH FROM WIKI !!!!
+    # url_list = get_xxxx_amount_wiki_people()
+    # candidate_list_full = get_birth_info_and_sentence(url_list)
 
-    # below a file to work with ...50 entries... takes too long to load , so saved as constante
-    # candidate_list_full = [['Mary Kathleen Turner', '19. Juni 1954 in Springfield, Missouri', 'ist eine US-amerikanische Schauspielerin, die ihre größten Filmerfolge in den 1980er-Jahren hatte'], ['Mary Kathleen Turner', '19. Juni 1954 in Springfield, Missouri', 'ist eine US-amerikanische Schauspielerin, die ihre größten Filmerfolge in den 1980er-Jahren hatte'], ['Tamara Taylor', '27. September 1970 in Toronto, Ontario', 'ist eine kanadische Schauspielerin'], ['Tamara Taylor', '27. September 1970 in Toronto, Ontario', 'ist eine kanadische Schauspielerin'], ['OBE', '7. Juni 1974 in Donaghadee,[1][2] Nordirland', 'ist ein britischer Dokumentarfilmer, Abenteurer, TV-Moderator, Survival-Ausbilder, Pfadfinderleiter, Autor und ehemaliger SAS-Soldat'], ['OBE', '7. Juni 1974 in Donaghadee,[1][2] Nordirland', 'ist ein britischer Dokumentarfilmer, Abenteurer, TV-Moderator, Survival-Ausbilder, Pfadfinderleiter, Autor und ehemaliger SAS-Soldat'], ['Cariba Heine', '1. Oktober 1988 in Johannesburg, Südafrika', 'ist eine australische Schauspielerin und Tänzerin'], ['Cariba Heine', '1. Oktober 1988 in Johannesburg, Südafrika', 'ist eine australische Schauspielerin und Tänzerin'], ['Daniels', '19. Februar 1955 in Athens, Georgia', 'ist ein US-amerikanischer Schauspieler'], ['Daniels', '19. Februar 1955 in Athens, Georgia', 'ist ein US-amerikanischer Schauspieler'], ['Lola Van Wagenen', '19. Dezember 1938 in Provo, Utah, Vereinigte Staaten', 'ist eine US-amerikanische Historikerin und Aktivistin'], ['Jeffrey Edward Epstein', '20. Januar 1953 in New York City; † 10. August 2019 ebenda', 'war ein US-amerikanischer Investmentbanker und verurteilter Sexualstraftäter'], ['Jeffrey Edward Epstein', '20. Januar 1953 in New York City; † 10. August 2019 ebenda', 'war ein US-amerikanischer Investmentbanker und verurteilter Sexualstraftäter'], ['Cynthia Ann Parker', 'zwischen 1825 und 1827 wohl im Crawford County,[1] Illinois; † 1870 ebenda', '[2] war die älteste Tochter der Siedler Silas Mercer Parker und Lucy (Duty) Parker'], ['Cynthia Ann Parker', 'zwischen 1825 und 1827 wohl im Crawford County,[1] Illinois; † 1870 ebenda', '[2] war die älteste Tochter der Siedler Silas Mercer Parker und Lucy (Duty) Parker'], ['Künstlername von Danielle Schoovaerts', '1. Januar 1953[2][3] in Brüssel[4]', 'ist eine belgische Sängerin'], ['Künstlername von Danielle Schoovaerts', '1. Januar 1953[2][3] in Brüssel[4]', 'ist eine belgische Sängerin'], ['Jon Stewart', '28. November 1962 in New York City als Jonathan Stuart Leibowitz', 'ist ein US-amerikanischer Komiker, Schauspieler, Schriftsteller, Produzent und Regisseur'], ['Jon Stewart', '28. November 1962 in New York City als Jonathan Stuart Leibowitz', 'ist ein US-amerikanischer Komiker, Schauspieler, Schriftsteller, Produzent und Regisseur'], ['geborene Donner', '26. Dezember 1855', 'und dessen späterer Ehefrau Agnes, geborene Donner (* 26'], ['geborene Donner', '26. Dezember 1855', 'und dessen späterer Ehefrau Agnes, geborene Donner (* 26'], ['Lucy Elizabeth Fry', '13. März 1992 in Brisbane, Queensland', 'ist eine australische Schauspielerin'], ['Lucy Elizabeth Fry', '13. März 1992 in Brisbane, Queensland', 'ist eine australische Schauspielerin'], ['Rodney Alcala', '23. August 1943 in San Antonio, Texas; † 24. Juli 2021 in Corcoran, Kalifornien[1]; gebürtig: Rodrigo Jacques Alcala-Buquor', 'war ein US-amerikanischer verurteilter Serienmörder'], ['Rodney Alcala', '23. August 1943 in San Antonio, Texas; † 24. Juli 2021 in Corcoran, Kalifornien[1]; gebürtig: Rodrigo Jacques Alcala-Buquor', 'war ein US-amerikanischer verurteilter Serienmörder'], ['Ruby Rose Turner', '16. Oktober 2005 in Los Angeles, Kalifornien, USA', 'ist eine US-amerikanische Schauspielerin, Sängerin und Tänzerin'], ['Kate Garry Hudson', '19. April 1979 in Los Angeles, Kalifornien', 'ist eine US-amerikanische Schauspielerin'], ['Kate Garry Hudson', '19. April 1979 in Los Angeles, Kalifornien', 'ist eine US-amerikanische Schauspielerin'], ['Andreas Apergis', 'vor 1988 in Kanada', 'ist ein kanadischer Schauspieler'], ['Snowden', '21. Juni 1983 in Elizabeth City, North Carolina', '[1] ist ein US-amerikanisch-russischer Whistleblower'], ['Snowden', '21. Juni 1983 in Elizabeth City, North Carolina', '[1] ist ein US-amerikanisch-russischer Whistleblower'], ['Pino Palladino', '17. Oktober 1957 in Cardiff, Wales', 'ist ein walisischer Bassist italienischer Abstammung'], ['Pino Palladino', '17. Oktober 1957 in Cardiff, Wales', 'ist ein walisischer Bassist italienischer Abstammung'], ['Gareth L John Forwood', '14. Oktober 1945; † 16. Oktober 2007', '[1] war ein britischer Schauspieler'], ['Allen Payne', '7. Juli 1968 in New York City als Allen Roberts', 'ist ein US-amerikanischer Schauspieler'], ['Jacqueline Erika Tham', '15. Dezember 1999 in Singapur', '[1] ist eine singapurisch-kanadische[2][3] Schauspielerin'], ['Jacqueline Erika Tham', '15. Dezember 1999 in Singapur', '[1] ist eine singapurisch-kanadische[2][3] Schauspielerin'], ['Baron Jean Baptiste Joseph Fourier', '21. März 1768 bei Auxerre; † 16. Mai 1830 in Paris', 'war ein französischer Mathematiker und Physiker'], ['Baron Jean Baptiste Joseph Fourier', '21. März 1768 bei Auxerre; † 16. Mai 1830 in Paris', 'war ein französischer Mathematiker und Physiker'], ['Gould', '27. Mai 1836 in Roxbury, New York; † 2. Dezember 1892 in New York City', 'war ein US-amerikanischer Anleger und Unternehmer'], ['Gould', '27. Mai 1836 in Roxbury, New York; † 2. Dezember 1892 in New York City', 'war ein US-amerikanischer Anleger und Unternehmer'], ['Frances Louise McDormand', '23. Juni 1957 in Chicago, Illinois als Cynthia Ann Smith', 'ist eine US-amerikanische Schauspielerin'], ['Frances Louise McDormand', '23. Juni 1957 in Chicago, Illinois als Cynthia Ann Smith', 'ist eine US-amerikanische Schauspielerin'], ['Melchior Ndadaye', '28. März 1953 in Mwaro; † 21. Oktober 1993 in Bujumbura', 'war der erste gewählte Präsident Burundis'], ['Melchior Ndadaye', '28. März 1953 in Mwaro; † 21. Oktober 1993 in Bujumbura', 'war der erste gewählte Präsident Burundis'], ['Ying Fusu', '3. Jahrhundert v. Chr.; † 210 v. Chr.', 'war der älteste Sohn des chinesischen Kaisers Qin Shihuangdi und dessen designierter Erbe'], ['Lauren Hays', '21. Mai 1968 in Fairfax, Virginia als Laura Lynn Thorsen', 'ist eine US-amerikanische Schauspielerin und Moderatorin'], ['Luciana Zogbi', '27. Oktober 1994 in São Paulo, Brasilien', 'ist eine brasilianisch-libanesische Sängerin, Songwriterin und Musikerin']]
+    # candidate_list_full = VickyCrush_storage.candidate_list_full
+    # get_all_answers_keywords(candidate_list_full)
+    # print(candidate_list_full)
 
-    get_all_answers_keywords(candidate_list_full)
-    print(candidate_list_full)
+    # !!!! OPTION LOAD from LOCAL FILE !!!!
+    all_wiki_people = [VickyCrush_storage.famous_people, VickyCrush_storage.actors, VickyCrush_storage.scientists, VickyCrush_storage.sports_people, VickyCrush_storage.celebrities, VickyCrush_storage.nobel_price_winners, VickyCrush_storage.musicians, VickyCrush_storage.famous_people_1, VickyCrush_storage.famous_people_2]
+
+    entries_number = 0
+    for wiki_list in all_wiki_people:
+        entries_number += len(wiki_list)
+        candidate_list_full = wiki_list
+        get_all_answers_keywords(candidate_list_full)
+        # print(candidate_list_full)
+
+    print (f"\nWe now have {entries_number} entries")
+
+
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
