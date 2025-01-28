@@ -1,7 +1,4 @@
 
-
-candidate_list_full = [['James Shane McConkey', '30. Dezember 1969 in Vancouver, British Columbia; † 26. März 2009 am Sass Pordoi, Trentino-Südtirol, Italien', 'war ein kanadisch-US-amerikanischer Extremskifahrer und Basejumper'], ['James Shane McConkey', '30. Dezember 1969 in Vancouver, British Columbia; † 26. März 2009 am Sass Pordoi, Trentino-Südtirol, Italien', 'war ein kanadisch-US-amerikanischer Extremskifahrer und Basejumper'], ['Patrick Nagel', '25. November 1945 in Dayton (Ohio', ', Vereinigte Staaten; † 4'], ['Patrick Nagel', '25. November 1945 in Dayton (Ohio', ', Vereinigte Staaten; † 4'], ['Isaiah Amir Mustafa', '11. Februar 1974 in Portland, Oregon[1]', 'ist ein US-amerikanischer Filmschauspieler und ehemaliger American-Football-Spieler'], ['Isaiah Amir Mustafa', '11. Februar 1974 in Portland, Oregon[1]', 'ist ein US-amerikanischer Filmschauspieler und ehemaliger American-Football-Spieler'], ['Anderson', '15. Februar 1949 in Batavia, Illinois', 'ist ein ehemaliger US-amerikanischer American-Football-Spieler auf der Position des Quarterbacks'], ['Dukes', '4. August 1961 in Inkster, Michigan', 'ist ein ehemaliger US-amerikanischer Basketballspieler'], ['David Tennant', '18. April 1971 in Bathgate, West Lothian, Schottland als David John McDonald', 'ist ein britischer Schauspieler und Synchronsprecher'], ['David Tennant', '18. April 1971 in Bathgate, West Lothian, Schottland als David John McDonald', 'ist ein britischer Schauspieler und Synchronsprecher'], ['Linsey Dawn McKenzie', '7. August 1978 in Harrow, Middlesex, England', '[1] ist ein britisches Erotikmodel und arbeitete auch als Pornodarstellerin'], ['Linsey Dawn McKenzie', '7. August 1978 in Harrow, Middlesex, England', '[1] ist ein britisches Erotikmodel und arbeitete auch als Pornodarstellerin'], ['Greg Bell', '1948', 'Gouverneur 2009 bis 2013, Greg Bell (* 1948) Vizegouverneur 1993 bis 2003 oder Olene S'], ['Greg Bell', '1948', 'Gouverneur 2009 bis 2013, Greg Bell (* 1948) Vizegouverneur 1993 bis 2003 oder Olene S'], ['Greg Bell', '1948', 'Gouverneur 2009 bis 2013, Greg Bell (* 1948) Vizegouverneur 1993 bis 2003 oder Olene S'], ['Molly Sims', '25. Mai 1973 in Murray, Kentucky', 'ist eine US-amerikanische Schauspielerin, Moderatorin und Model'], ['Molly Sims', '25. Mai 1973 in Murray, Kentucky', 'ist eine US-amerikanische Schauspielerin, Moderatorin und Model'], ['Carter', '4. September 1981 als Beyoncé Giselle Knowles in Houston, Texas', 'ist eine US-amerikanische R&B- und Pop-Sängerin und Schauspielerin'], ['Carter', '4. September 1981 als Beyoncé Giselle Knowles in Houston, Texas', 'ist eine US-amerikanische R&B- und Pop-Sängerin und Schauspielerin'], ['Thorpe', 'wahrscheinlich am 22. Mai 1887 bei Prague im Indianerterritorium (heute Oklahoma', 'als Wa-Tho-Huck (= Leuchtender Pfad); † 28'], ['Thorpe', 'wahrscheinlich am 22. Mai 1887 bei Prague im Indianerterritorium (heute Oklahoma', 'als Wa-Tho-Huck (= Leuchtender Pfad); † 28'], ['John William Jakes', '31. März 1932 in Chicago, Illinois; † 11. März 2023 in Sarasota, Florida[1]', 'war ein US-amerikanischer Schriftsteller'], ['Lee Majors', '23. April 1939 in Wyandotte, Michigan; gebürtig Harvey Lee Yeary', 'ist ein US-amerikanischer Schauspieler'], ['Lee Majors', '23. April 1939 in Wyandotte, Michigan; gebürtig Harvey Lee Yeary', 'ist ein US-amerikanischer Schauspieler'], ['Ray Conniff', '6. November 1916 in Attleboro, Massachusetts; † 12. Oktober 2002 in Escondido, Kalifornien', 'war ein US-amerikanischer mit dem Grammy ausgezeichneter Komponist, Arrangeur, Orchesterleiter und Posaunist, der als „Vater des Easy Listening“ galt'], ['Ray Conniff', '6. November 1916 in Attleboro, Massachusetts; † 12. Oktober 2002 in Escondido, Kalifornien', 'war ein US-amerikanischer mit dem Grammy ausgezeichneter Komponist, Arrangeur, Orchesterleiter und Posaunist, der als „Vater des Easy Listening“ galt']]
-
 import re #find_birth_year
 import random #random pick of famous people for the player
 
@@ -20,7 +17,7 @@ def find_birth_year(text):
     else:
         print('No integer found in wikipedia. Skipping that Question!!')
         return False
-
+        
 
 def get_answer_1(points, random_person):
     """ gets the answer for birth date from the user and compares with random_person
@@ -77,7 +74,7 @@ def get_answer_2(points, random_person, countries, us_states):
         print("Skipping this question!")
         return points
 
-    # Ask user for input and check:
+    # Ask user for country input and check:
     location_answer = input(f"\nQUESTION 2: Where was {name} born? ").strip().lower()
     if location_answer == country or (state and location_answer == state):
         print(f"Correct! {name} was born in {location_answer}. You get 10 points!")
@@ -85,41 +82,41 @@ def get_answer_2(points, random_person, countries, us_states):
     else:
         print(f"False! {name} was born in {state if state else country}.")
 
+    # Optional Guess if a city was extracted:
+    birth_city = random_person[1].split(",")[0].split()[-1]
+    if len(birth_city) > 4:
+        guess_city = input(f"Get 10 Bonus Points if you know the City {name} was born.\nGuess the city: ")
+
+        if guess_city.lower() == birth_city.lower():
+            points += 10
+            print(f"Great Job, {birth_city} is correct!")
+        else:
+            print(f"False, {name} was born in {birth_city}.")
+
     return points
 
 
 def get_answer_3(points, random_person, profession_keywords):
     """Gets the answer for birth location from user and compares with random_person.
        Returns updated points for Question 2."""
-
     print(f"Current Points: {points}")
     name = random_person[0]
     profession_info = random_person[2].split()
 
-    # find professions for random person:
-    professions = []
-    for word in profession_info:
-        if word.lower() in profession_keywords:
-            professions.append(word.lower())
+    # find professions of the random person
+    professions = [word for word in profession_info if word in profession_keywords]
 
     # make a guess:
     profession_guess = input(f"\nWhat is the profession of {name}, why are they famous? (Seperate with ',')\n")
     guesses = [guess.strip().lower() for guess in profession_guess.split(',')]
 
-    # Calculate points for each correct match:
-    correct_guesses = 0
     for guess in guesses:
         if guess in professions:
-            correct_guesses += 1
-            print(f"Correct! {guess.upper()} is a profession of {name}! You earn 10 Points!")
+            print(f"Correct! {guess.upper()} is a profession of {name}! You get 10 Points!")
+            points += 10
+        else:
+            print(f"{guess} is no profession. Sorry!")
 
-    # Update points based on the number of correct guesses
-    points += correct_guesses * 10
-
-    if correct_guesses == 0:
-        print(f"Wrong! {name} has the following professions:")
-        for profession in professions:
-            print(profession)
     return points
 
 
@@ -212,11 +209,6 @@ def main():
 if __name__ =="__main__":
     main()
 
-# random search in the list is pending
-# switch language to english?
-# limited to 4-digit birth year
-# limited to the use of lists to find birth location.
-
 '''
 Scoring System:
 
@@ -227,6 +219,7 @@ Q1: birth year
 
 Q2: birth location:
 -> 10 points if correct country
+-> 10 Bonus points for a city (only if city is found)
 
 Q3: profession
 -> 10 points for each matching profession
