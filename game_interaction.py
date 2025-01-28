@@ -8,7 +8,8 @@ import random #random pick of famous people for the player
 def get_random_person(data):
     """ Pick a person at random from a list of celebrities """
     data = candidate_list_full
-    pass
+    random_person = random.choice(data)
+    return random_person
 
 def find_birth_year(text):
     """ finds the birth year in the birth_info string in results. """
@@ -190,7 +191,7 @@ def main():
 
     #Game Start: Print Welcome Text, Rules, etc...
     # get_random_person():
-    random_person = ['Frances Louise McDormand', '23. Juni 1957 in Chicago, Illinois als Cynthia Ann Smith', 'ist eine US-amerikanische Schauspielerin']
+    random_person = get_random_person(candidate_list_full)
 
     print(f"\nWelcome to VickyCrush! Your Random Person is: {random_person[0].upper()}")
 
